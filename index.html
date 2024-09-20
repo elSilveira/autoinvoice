@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, textarea { width: 100%; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<h1>Invoice Generator</h1>
+<form id="invoiceForm">
+    <h2>Invoice Number</h2>
+    <input type="number" id="invoiceNumber" placeholder="Invoice Number" required>
+    
+    <h2>Receiver Information</h2>
+    <input type="text" id="receiverName" placeholder="Receiver Name" required>
+    <input type="text" id="streetAddress" placeholder="Street Address" required>
+    <input type="text" id="cityStateZip" placeholder="City, State, ZIP Code" required>
+    <input type="text" id="phone" placeholder="Phone" required>
+    <input type="email" id="email" placeholder="Email Address" required>
+    
+    <h2>Project Information</h2>
+    <label for="project">Project</label>
+    <input type="text" id="project" placeholder="Project" required>
+    <label for="company">Company</label>
+    <input type="text" id="company" placeholder="Company" required>
+    <label for="unitPrice">Price</label>
+    <input type="number" id="unitPrice" placeholder="Unit Price" required>
+
+    <button type="button" onclick="saveData()">Save Data</button>
+    <button type="button" onclick="generatePDF()">Generate PDF</button>
+</form>
+
+<script src="script.js"></script>
+</body>
+</html>
