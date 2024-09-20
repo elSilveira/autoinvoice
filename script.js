@@ -47,22 +47,27 @@ function formatDate(date) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Intl.DateTimeFormat('en-US', options).format(date);
 }
-
 function getFifthBusinessDay() {
     const today = new Date();
-    const month = today.getMonth();
-    const year = today.getFullYear();
+    let month = today.getMonth() + 1; // Move to the next month
+    let year = today.getFullYear();
+
+    if (month > 11) { // If next month is January of the next year
+        month = 0;
+        year++;
+    }
+
     const firstDay = new Date(year, month, 1);
     let businessDaysCount = 0;
     let currentDate = firstDay;
 
     while (businessDaysCount < 5) {
-        if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
+        if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) { // Skip weekends
             businessDaysCount++;
         }
         currentDate.setDate(currentDate.getDate() + 1);
     }
-    
+
     return formatDate(currentDate);
 }
 
