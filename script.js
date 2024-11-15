@@ -2,6 +2,7 @@
 function loadData() {
     const receiverData = JSON.parse(localStorage.getItem('receiverData'));
     const invoiceNumber = localStorage.getItem('invoiceNumber') || '';
+    const billTo = JSON.parse(localStorage.getItem('billTo'));
 
     if (receiverData) {
         document.getElementById('receiverName').value = receiverData.name || '';
@@ -13,11 +14,19 @@ function loadData() {
         document.getElementById('company').value = receiverData.company || '';
         document.getElementById('unitPrice').value = receiverData.unitPrice || '';
     }
+
+    if(billTo){
+        document.getElementById('recipientName').value = billTo.recipientName || '';
+        document.getElementById('companyName').value = billTo.companyName || '';
+        document.getElementById('ein').value = billTo.ein || '';
+        document.getElementById('street').value = billTo.street || '';
+        document.getElementById('toCityStateZip').value = billTo.cityStateZip || '';
+    }
     
     document.getElementById('invoiceNumber').value = invoiceNumber; // Load the invoice number
 }
 
-function saveData() {
+function saveData(showAlert=true) {
     const receiverData = {
         name: document.getElementById('receiverName').value,
         address: document.getElementById('streetAddress').value,
@@ -26,11 +35,19 @@ function saveData() {
         email: document.getElementById('email').value,
         project: document.getElementById('project').value,
         company: document.getElementById('company').value,
-        unitPrice: document.getElementById('unitPrice').value,
+        unitPrice: document.getElementById('unitPrice').value
     };
+    const billTo = {
+        recipientName: document.getElementById('recipientName').value,
+        companyName: document.getElementById('companyName').value,
+        ein: document.getElementById('ein').value,
+        street: document.getElementById('street').value,
+        cityStateZip: document.getElementById('toCityStateZip').value,
+    }
 
     localStorage.setItem('receiverData', JSON.stringify(receiverData));
-    alert('Data saved!');
+    localStorage.setItem('billTo', JSON.stringify(billTo));
+    showAlert && alert('Data saved!');
 }
 
 function getCurrentMonthName() {
@@ -47,6 +64,7 @@ function formatDate(date) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Intl.DateTimeFormat('en-US', options).format(date);
 }
+
 function getFifthBusinessDay() {
     const today = new Date();
     let month = today.getMonth() + 1; // Move to the next month
@@ -72,11 +90,12 @@ function getFifthBusinessDay() {
 }
 
 function generatePDF() {
-    saveData();
+    saveData(false);
     const { jsPDF } = window.jspdf;
 
     const receiverData = JSON.parse(localStorage.getItem('receiverData'));
     const invoiceNumber = document.getElementById('invoiceNumber').value; // Get invoice number from input
+    const billTo = JSON.parse(localStorage.getItem('billTo'));
 
     const doc = new jsPDF();
 
@@ -116,30 +135,29 @@ function generatePDF() {
     doc.text(`Email Address:`, 20, 130);
     doc.setFontSize(12);
     doc.text(`${receiverData.email}`, 80, 130);
-
     // Bill To Section
     doc.setFontSize(18);
     doc.text("BILL TO", 20, 150);
     doc.setFontSize(15);
     doc.text(`Recipient Name:`, 20, 160);
     doc.setFontSize(12);
-    doc.text(`Trio Global Inc`, 80, 160);
+    doc.text(billTo.recipientName, 80, 160);
     doc.setFontSize(15);
     doc.text(`Company Name:`, 20, 170);
     doc.setFontSize(12);
-    doc.text(`Trio`, 80, 170);
+    doc.text(billTo.companyName, 80, 170);
     doc.setFontSize(15);
     doc.text(`EIN:`, 20, 180);
     doc.setFontSize(12);
-    doc.text(`82-4821545`, 80, 180);
+    doc.text(billTo.ein, 80, 180);
     doc.setFontSize(15);
     doc.text(`Street Address:`, 20, 190);
     doc.setFontSize(12);
-    doc.text(`24 School St`, 80, 190);
+    doc.text(billTo.street, 80, 190);
     doc.setFontSize(15);
     doc.text(`City, State, ZIP Code:`, 20, 200);
     doc.setFontSize(12);
-    doc.text(`Boston, MA 02108 USA`, 80, 200);
+    doc.text(billTo.cityStateZip, 80, 200);
 
     // Description Section
     doc.setFontSize(16);
