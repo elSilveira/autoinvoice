@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice Generator</title>
-    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         input, textarea { width: 100%; margin: 10px 0; }
@@ -16,13 +16,7 @@
 <form id="invoiceForm">
     <h2>Invoice Number</h2>
     <input type="number" id="invoiceNumber" placeholder="Invoice Number" required>
-    <h2>Bill To</h2>
-    <input type="text" id="recipientName" placeholder="Recipient Name" required>
-    <input type="text" id="companyName" placeholder="Company Name" required>
-    <input type="text" id="ein" placeholder="EIN" required>
-    <input type="text" id="street" placeholder="Street" required>
-    <input type="text" id="toCityStateZip" placeholder="City, State, ZIP Code" required>
-   
+    
     <h2>Receiver Information</h2>
     <input type="text" id="receiverName" placeholder="Receiver Name" required>
     <input type="text" id="streetAddress" placeholder="Street Address" required>
